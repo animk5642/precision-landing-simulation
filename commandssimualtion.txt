@@ -1,0 +1,32 @@
+throttle arm 
+takeoff 10
+
+gazebo topic to ros2 
+
+source /opt/ros/humble/setup.zsh
+ros2 run ros_gz_bridge parameter_bridge \
+'/world/iris_runway/model/iris_with_gimbal/model/gimbal/link/pitch_link/sensor/camera/image@sensor_msgs/msg/Image[gz.msgs.Image'
+
+#for monortoirng x
+ros2 topic hz /world/iris_runway/model/iris_with_gimbal/model/gimbal/link/pitch_link/sensor/camera/image
+
+
+#kill commands 
+
+	# 1. Kill Gazebo
+	pkill -9 -f "gz sim"
+
+	# 2. Kill ArduPilot SITL
+	pkill -9 -f arducopter
+
+	# 3. Kill MAVProxy
+	pkill -9 -f mavproxy
+
+	# 4. Kill the ROS 2 Bridge
+	pkill -9 -f parameter_bridge
+
+	# 5. Kill stuck ROS 2 CLI tools (like topic hz or echo)
+	pkill -9 -f "ros2 topic"
+
+	# 6. Give the OS 2 seconds to release the network ports (9002, 9003, 5760)
+	sleep 2
