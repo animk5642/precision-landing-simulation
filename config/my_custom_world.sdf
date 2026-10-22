@@ -124,29 +124,31 @@
        <!-- ArUco Landing Pad -->
       <!-- ArUco Landing Pad -->
        <!-- ArUco Landing Pad (Thin Box Workaround) -->
+        <!-- ArUco Landing Pad -->
     <model name="aruco_landing_pad">
       <static>true</static>
-      <pose>2 0 0.01 0 0 0</pose> 
+      <pose>2 0 0.0005 0 0 0</pose>
       <link name="link">
         <collision name="collision">
           <geometry>
-            <!-- A box 1x1 meter, but only 1mm thick -->
-            <box><size>1 1 0.001</size></box>
+            <box><size>0.2 0.2 0.001</size></box>
           </geometry>
         </collision>
         <visual name="visual">
           <geometry>
-            <box><size>1 1 0.001</size></box>
+            <!-- YOU WERE MISSING THIS LINE -->
+            <box><size>0.2 0.2 0.001</size></box>
           </geometry>
           <material>
             <ambient>1 1 1 1</ambient>
             <diffuse>1 1 1 1</diffuse>
             <pbr>
               <metal>
-                <!-- Use the absolute path to your image -->
+                <!-- FIXED ABSOLUTE PATH -->
                 <albedo_map>/mnt/data/Documents/precision-landing-simulation/assets/marker_0.png</albedo_map>
-                <!-- Emissive map forces the marker to be bright and visible -->
-                 <emissive_map>/mnt/data/Documents/precision-landing-simulation/assets/marker_0.png</emissive_map>                 <metalness>0.0</metalness>
+                <emissive_map>/mnt/data/Documents/precision-landing-simulation/assets/marker_0.png</emissive_map>
+
+                <metalness>0.0</metalness>
                 <roughness>0.5</roughness>
               </metal>
             </pbr>
