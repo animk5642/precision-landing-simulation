@@ -50,7 +50,7 @@ class ArucoPerceptionNode(Node):
                 
                 # --- THE MATH BEGINS HERE ---
                 # Marker size in meters (e.g., 0.1 meters = 10cm)
-                marker_size = 0.1 
+                marker_size = 0.3
                 
                 # 3D points of the marker corners in real life (Z=0 because it's flat)
                 obj_points = np.array([
