@@ -1,6 +1,9 @@
 <?xml version="1.0" ?>
 <sdf version="1.9">
   <world name="iris_runway">
+   <wind>
+    <linear_velocity>4.0 0.0 0.0</linear_velocity> <!-- 4 m/s wind blowing East -->
+  </wind>
     <physics name="1ms" type="ignore">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1.0</real_time_factor>
