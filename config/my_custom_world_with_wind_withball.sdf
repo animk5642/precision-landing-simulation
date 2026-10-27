@@ -1,0 +1,159 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <world name="iris_runway">
+
+    <!-- 1. THE BASE WIND (This was missing!) -->
+       <!-- Base wind: 6 m/s blowing East -->
+    <wind>
+      <linear_velocity>20.0 0.0 0.0</linear_velocity>
+    </wind>
+     <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"></plugin>
+     <plugin filename="gz-sim-wind-effects-system" name="gz::sim::systems::WindEffects">
+      <force_approximation_scaling_factor>1.0</force_approximation_scaling_factor>
+      
+      <horizontal>
+        <magnitude>
+          <time_for_rise>2.0</time_for_rise>
+          <!-- Gusts: Wind speed fluctuates by 40% every 8 seconds -->
+          <sin>
+            <amplitude_percent>0.4</amplitude_percent>
+            <period>8.0</period>
+          </sin>
+          <!-- Turbulence: Random variations in wind speed -->
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>0.5</stddev>
+          </noise>
+        </magnitude>
+        
+        <direction>
+          <time_for_rise>2.0</time_for_rise>
+          <!-- Direction: Wind shifts 20 degrees left and right every 15 seconds -->
+          <sin>
+            <amplitude>20</amplitude>
+            <period>15.0</period>
+          </sin>
+          <!-- Turbulence: Random variations in direction -->
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>0.1</stddev>
+          </noise>
+        </direction>
+      </horizontal>
+    </plugin>
+
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"></plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"></plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"></plugin>
+    <plugin filename="gz-sim-navsat-system" name="gz::sim::systems::NavSat"></plugin>
+
+    <scene>
+      <ambient>1.0 1.0 1.0</ambient>
+      <background>0.8 0.8 0.8</background>
+      <sky></sky>
+    </scene>
+
+    <spherical_coordinates>
+      <latitude_deg>-35.363262</latitude_deg>
+      <longitude_deg>149.165237</longitude_deg>
+      <elevation>584</elevation>
+      <heading_deg>0</heading_deg>
+      <surface_model>EARTH_WGS84</surface_model>
+    </spherical_coordinates>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.8 0.8 0.8 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!-- 4. THE WIND TEST BALL (Proves wind is working!) -->
+    <model name="wind_test_ball">
+      <pose>0 -2 1.0 0 0 0</pose> <!-- Placed 2m to the left, 1m high -->
+      <link name="ball_link">
+        <enable_wind>true</enable_wind> <!-- This makes it feel the wind -->
+        <inertial>
+          <mass>0.1</mass> <!-- Very light -->
+        </inertial>
+        <collision name="ball_collision">
+          <geometry><sphere><radius>0.2</radius></sphere></geometry>
+        </collision>
+        <visual name="ball_visual">
+          <geometry><sphere><radius>0.2</radius></sphere></geometry>
+          <material><ambient>1 0 0 1</ambient><diffuse>1 0 0 1</diffuse></material> <!-- Red Ball -->
+        </visual>
+      </link>
+    </model>
+
+    <model name="axes">
+      <static>1</static>
+      <link name="link">
+        <visual name="r">
+          <cast_shadows>0</cast_shadows>
+          <pose>5 0 0.1 0 0 0</pose>
+          <geometry><box><size>10 0.01 0.01</size></box></geometry>
+          <material><ambient>1 0 0 0.8</ambient><diffuse>1 0 0 0.8</diffuse></material>
+        </visual>
+        <visual name="g">
+          <cast_shadows>0</cast_shadows>
+          <pose>0 5 0.1 0 0 0</pose>
+          <geometry><box><size>0.01 10 0.01</size></box></geometry>
+          <material><ambient>0 1 0 0.8</ambient><diffuse>0 1 0 0.8</diffuse></material>
+        </visual>
+        <visual name="b">
+          <cast_shadows>0</cast_shadows>
+          <pose>0 0 5.1 0 0 0</pose>
+          <geometry><box><size>0.01 0.01 10</size></box></geometry>
+          <material><ambient>0 0 1 0.8</ambient><diffuse>0 0 1 0.8</diffuse></material>
+        </visual>
+      </link>
+    </model>
+    
+    <include>
+      <uri>model://runway</uri>
+      <pose degrees="true">-29 545 0 0 0 363</pose>
+    </include>
+
+    <include>
+      <uri>model://iris_with_gimbal</uri>
+      <pose degrees="true">0 0 0.195 0 0 90</pose>
+    </include>
+
+    <model name="aruco_landing_pad">
+      <static>true</static>
+      <pose>2 0 0.0005 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><box><size>0.4 0.4 0.001</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.4 0.4 0.001</size></box></geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <pbr>
+              <metal>
+                <albedo_map>/mnt/data/Documents/precision-landing-simulation/assets/marker_0.png</albedo_map>
+                <emissive_map>/mnt/data/Documents/precision-landing-simulation/assets/marker_0.png</emissive_map>
+                <metalness>0.0</metalness>
+                <roughness>0.5</roughness>
+              </metal>
+            </pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>

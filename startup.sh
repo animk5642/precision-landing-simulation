@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-gz sim -r /mnt/data/Documents/precision-landing-simulation/config/my_custom_world.sdf &
+gz sim -r /mnt/data/Documents/precision-landing-simulation/config/my_custom_world_with_wind_withball.sdf&
 GZ_PID=$!
 
 cleanup() {
