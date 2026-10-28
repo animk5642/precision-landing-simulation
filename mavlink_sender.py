@@ -13,8 +13,12 @@ class MavlinkSender:
 
         print("Connecting to MAVProxy...")
         self.mav = mavutil.mavlink_connection(connection_url)
-        self.mav.wait_heartbeat(timeout=15)
-        print(f"MAVLink Connected to System {self.mav.target_system}!")
+        hb = self.mav.wait_heartbeat(timeout=15)
+        if hb is None:
+           raise RuntimeError("No heartbeat. In MAVProxy run: output add 127.0.0.1:14560")
+        print("MAVLink connection established")
+        # self.mav.wait_heartbeat(timeout=15)
+        # print(f"MAVLink Connected to System {self.mav.target_system}!")
 
     def send_target(self, x_cam, y_cam, z_cam):
         # 1. The Math

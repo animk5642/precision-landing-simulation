@@ -30,3 +30,8 @@ ros2 topic hz /world/iris_runway/model/iris_with_gimbal/model/gimbal/link/pitch_
 
 	# 6. Give the OS 2 seconds to release the network ports (9002, 9003, 5760)
 	sleep 2
+
+
+param set PLND_ENABLED 1
+param set PLND_TYPE 1
+param set PLND_EST_TYPE 1

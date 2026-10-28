@@ -4,6 +4,7 @@ from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge
 import cv2
 import numpy as np
+import time
 
 from mavlink_sender import MavlinkSender
 
@@ -64,6 +65,7 @@ class ArucoNode(Node):
                 ok, rvec, tvec = cv2.solvePnP(self.obj_pts, img_points, self.cam_matrix, self.dist, flags=cv2.SOLVEPNP_IPPE_SQUARE)
                 
                 if ok:
+                
                     x, y, z = tvec.flatten()
                     self.mavlink.send_target(x, y, z)
 

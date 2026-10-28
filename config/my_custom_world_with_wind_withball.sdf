@@ -5,7 +5,7 @@
     <!-- 1. THE BASE WIND (This was missing!) -->
        <!-- Base wind: 6 m/s blowing East -->
     <wind>
-      <linear_velocity>20.0 0.0 0.0</linear_velocity>
+      <linear_velocity>30.0 0.0 0.0</linear_velocity>
     </wind>
      <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"></plugin>
      <plugin filename="gz-sim-wind-effects-system" name="gz::sim::systems::WindEffects">
